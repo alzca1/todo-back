@@ -17,4 +17,22 @@ const createTodoService = async (title: string): Promise<Todo> => {
   }
 };
 
-export { createTodoService };
+const updateTodoTitleService = async (id: string, title: string): Promise<Todo> => {
+  const client = await db.connect();
+
+  try {
+    const updatedTodo = await client.query(
+      "UPDATE todos SET title = $1 WHERE id = $2 RETURNING *",
+      [title, id]
+    );
+
+    return updatedTodo.rows[0];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
+export { createTodoService, updateTodoTitleService };
