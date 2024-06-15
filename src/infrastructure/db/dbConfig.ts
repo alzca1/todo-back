@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 import dotenv from "dotenv";
+import { createTable } from "./createTable";
 
 dotenv.config();
 
@@ -13,9 +14,10 @@ const db = new Pool({
   port: parseInt(process.env.DB_PORT ?? "5432"),
 });
 
-const connectDB = async () => {
+const initializeDB = async () => {
   try {
     connection = await db.connect();
+    await createTable();
     console.info("connected to the database...");
   } catch (error) {
     console.error("Database connection error ", error);
@@ -23,4 +25,4 @@ const connectDB = async () => {
   }
 };
 
-export { db, connectDB };
+export { db, initializeDB };
