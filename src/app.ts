@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import { createTodoService } from "./application/todoService";
+import { createTodoService, updateTodoTitleService } from "./application/todoService";
 
 const app = express();
 
@@ -19,6 +19,28 @@ app.post("/create-todo", async (req: Request, res: Response): Promise<void> => {
 
     if (newTodo) {
       res.status(201).json(newTodo);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.patch("/update-todo", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id, title } = req.body;
+
+    if (!id || !title || title.trim() === "") {
+      res
+        .status(403)
+        .json("A valid id and a valid title must be provided if an update is requested!");
+      return;
+    }
+
+    const updatedTodo = await updateTodoTitleService(id, title);
+
+    if (updatedTodo) {
+      res.status(201).json(updatedTodo);
     }
   } catch (error: any) {
     console.error(error);
