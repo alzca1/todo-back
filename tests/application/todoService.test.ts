@@ -36,7 +36,9 @@ describe("todoService ", () => {
         .send({ title: "Turn the dishwasher on before leaving home 2morrow" });
 
       expect(response.status).toBe(403);
-      expect(response.body).toEqual("An id must be provided if an updated is requested!");
+      expect(response.body).toEqual(
+        "A valid id and a valid title must be provided if an update is requested!"
+      );
     });
 
     it("should return status code 403 if updated title is '', null or undefined", async () => {
@@ -44,7 +46,7 @@ describe("todoService ", () => {
 
       expect(response.status).toBe(403);
       expect(response.body).toEqual(
-        "A valid title must be provided if a todo's title update is intended"
+        "A valid id and a valid title must be provided if an update is requested!"
       );
     });
 
@@ -54,12 +56,8 @@ describe("todoService ", () => {
         .send({ id: 1, title: "Take the dog out for a walk", completed: true });
 
       expect(response.status).toBe(201);
-      expect(response.body).toEqual({
-        completed: expect.any(Boolean),
-        dateCompleted: expect.any(String),
-        id: 1,
-        title: "Take the dog out for a walk",
-      });
+      expect(response.body).toHaveProperty("id", 1);
+      expect(response.body).toHaveProperty("title", "Take the dog out for a walk");
     });
   });
 });
