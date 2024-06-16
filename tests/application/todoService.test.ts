@@ -90,7 +90,7 @@ describe("todoService ", () => {
     it("should return a 201 status if 'completed' has a 'true' value and 'dateCompleted' is properly added", async () => {
       const response = await request(app)
         .patch("/toggle-completed")
-        .send({ id: 1, completed: true, dateCompleted: Date.now() });
+        .send({ id: 1, completed: true });
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty("completed", true);

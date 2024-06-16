@@ -1,6 +1,11 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import { createTodoService, updateTodoTitleService } from "./application/todoService";
+import {
+  createTodoService,
+  toggleTodoCompletionService,
+  updateTodoTitleService,
+} from "./application/todoService";
+import { Todo } from "./domain/todo";
 
 const app = express();
 
@@ -41,6 +46,27 @@ app.patch("/update-todo", async (req: Request, res: Response): Promise<void> => 
 
     if (updatedTodo) {
       res.status(201).json(updatedTodo);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.patch("/toggle-completed", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id, completed } = req.body;
+    if (!id || typeof completed !== "boolean") {
+      res
+        .status(403)
+        .json("A valid id and a boolean value must be provided to fulfill the toggle action");
+      return;
+    }
+
+    const toggledTodo = await toggleTodoCompletionService(id, completed);
+
+    if (toggledTodo) {
+      res.status(201).json(toggledTodo);
     }
   } catch (error: any) {
     console.error(error);
