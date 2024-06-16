@@ -5,7 +5,7 @@ const createTodoService = async (title: string): Promise<Todo> => {
   const client = await db.connect();
   try {
     const newTodo = await client.query(
-      "INSERT INTO todos(title, dateCreated, completed) VALUES ($1, NOW(), $2) RETURNING *",
+      'INSERT INTO todos(title, "dateCreated", completed) VALUES ($1, NOW(), $2) RETURNING *',
       [title, false]
     );
     return newTodo.rows[0];
