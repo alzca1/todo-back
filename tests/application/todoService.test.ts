@@ -60,7 +60,7 @@ describe("todoService ", () => {
     });
   });
 
-  describe.only("toggle-completed PATCH", () => {
+  describe("toggle-completed PATCH", () => {
     // it returns 403 if no id is provided
     it("should return status code 403 if no id is provided", async () => {
       const response = await request(app)
@@ -105,6 +105,22 @@ describe("todoService ", () => {
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty("completed", false);
       expect(response.body).toHaveProperty("dateCompleted", null);
+    });
+  });
+
+  describe.only("todos GET ", () => {
+    it("returns a 204 status code if no todos present in the database yet", async () => {
+      const response = await request(app).get("/todos").send({});
+
+      expect(response.status).toBe(204);
+      expect(response.body).toStrictEqual({});
+    });
+
+    it("returns a 200 if there are todos stored in the database and they are properly listed", async () => {
+      const response = await request(app).get("/todos").send({});
+
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBeGreaterThan(0);
     });
   });
 });
