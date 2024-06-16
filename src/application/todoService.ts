@@ -41,7 +41,7 @@ const toggleTodoCompletionService = async (id: string, completed: boolean): Prom
   try {
     const dateCompleted = completed ? new Date().toISOString() : null;
     const toggledTodo = await client.query(
-      "UPDATE todos set completed = $1, dateCompleted = $2 WHERE id = $3 RETURNING *",
+      'UPDATE todos set completed = $1, "dateCompleted" = $2 WHERE id = $3 RETURNING *',
       [completed, dateCompleted, id]
     );
 
