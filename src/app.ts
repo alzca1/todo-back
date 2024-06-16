@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import {
   createTodoService,
+  getTodosService,
   toggleTodoCompletionService,
   updateTodoTitleService,
 } from "./application/todoService";
@@ -68,6 +69,21 @@ app.patch("/toggle-completed", async (req: Request, res: Response): Promise<void
     if (toggledTodo) {
       res.status(201).json(toggledTodo);
     }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get("/todos", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const todos = await getTodosService();
+
+    if (todos.length == 0) {
+      res.status(204).json();
+      return;
+    }
+    res.status(200).json(todos);
   } catch (error: any) {
     console.error(error);
     res.status(500).json({ message: error.message });
