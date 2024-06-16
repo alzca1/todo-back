@@ -35,4 +35,23 @@ const updateTodoTitleService = async (id: string, title: string): Promise<Todo> 
   }
 };
 
+const toggleTodoCompletionService = async (id: string, completed: boolean): Promise<Todo> => {
+  const client = await db.connect();
+
+  try {
+    const dateCompleted = completed ? Date.now() : null;
+    const toggledTodo = await client.query(
+      "UPDATE todos set completed = $1, dateCompleted = $2 WHERE id = $3 RETURNING *",
+      [completed, dateCompleted, id]
+    );
+
+    return toggledTodo.rows[0];
+  } catch (error) {
+    console.error(error);
+    throw Error;
+  } finally {
+    client.release();
+  }
+};
+
 export { createTodoService, updateTodoTitleService };
