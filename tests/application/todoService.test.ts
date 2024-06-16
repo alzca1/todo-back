@@ -113,7 +113,7 @@ describe("todoService ", () => {
       const response = await request(app).get("/todos").send({});
 
       expect(response.status).toBe(204);
-      expect(response.body.length).toBe(0);
+      expect(response.body).toStrictEqual({});
     });
 
     it("returns a 200 if there are todos stored in the database and they are properly listed", async () => {
