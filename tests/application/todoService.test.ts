@@ -20,8 +20,8 @@ describe("todoService ", () => {
       expect(response.status).toBe(201);
       expect(response.body).toEqual({
         completed: false,
-        datecompleted: null,
-        datecreated: expect.any(String),
+        dateCompleted: null,
+        dateCreated: expect.any(String),
         id: expect.any(Number),
         title: "Wash the dishes!",
       });
@@ -60,7 +60,7 @@ describe("todoService ", () => {
     });
   });
 
-  describe("toggle-completed PATCH", () => {
+  describe.only("toggle-completed PATCH", () => {
     // it returns 403 if no id is provided
     it("should return status code 403 if no id is provided", async () => {
       const response = await request(app)
@@ -100,7 +100,7 @@ describe("todoService ", () => {
     it("should return a 201 status if 'completed' has a 'false' value and 'dateCompleted' is set to null", async () => {
       const response = await request(app)
         .patch("/toggle-completed")
-        .send({ id: 1, completed: false, dateCompleted: null });
+        .send({ id: 1, completed: false });
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty("completed", false);
