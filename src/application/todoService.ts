@@ -39,7 +39,7 @@ const toggleTodoCompletionService = async (id: string, completed: boolean): Prom
   const client = await db.connect();
 
   try {
-    const dateCompleted = completed ? Date.now() : null;
+    const dateCompleted = completed ? new Date().toISOString() : null;
     const toggledTodo = await client.query(
       "UPDATE todos set completed = $1, dateCompleted = $2 WHERE id = $3 RETURNING *",
       [completed, dateCompleted, id]
@@ -54,4 +54,4 @@ const toggleTodoCompletionService = async (id: string, completed: boolean): Prom
   }
 };
 
-export { createTodoService, updateTodoTitleService };
+export { createTodoService, updateTodoTitleService, toggleTodoCompletionService };
