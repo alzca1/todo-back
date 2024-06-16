@@ -54,4 +54,18 @@ const toggleTodoCompletionService = async (id: string, completed: boolean): Prom
   }
 };
 
-export { createTodoService, updateTodoTitleService, toggleTodoCompletionService };
+const getTodosService = async (): Promise<Todo[]> => {
+  const client = await db.connect();
+
+  try {
+    const getAllTodos = await client.query("SELECT * FROM todos");
+    return getAllTodos.rows;
+  } catch (error) {
+    console.error(error);
+    throw Error;
+  } finally {
+    client.release();
+  }
+};
+
+export { createTodoService, updateTodoTitleService, toggleTodoCompletionService, getTodosService };
