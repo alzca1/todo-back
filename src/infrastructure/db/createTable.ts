@@ -11,8 +11,8 @@ const createTable = async () => {
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         completed BOOLEAN NOT NULL DEFAULT FALSE,
-        dateCreated TIMESTAMP NOT NULL DEFAULT NOW(),
-        dateCompleted TIMESTAMP
+        "dateCreated" TIMESTAMP NOT NULL DEFAULT NOW(),
+        "dateCompleted" TIMESTAMP
     )
     `;
     await client.query(createTableQuery);
