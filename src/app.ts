@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 import {
   createTodoService,
   getTodosService,
@@ -12,6 +13,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 app.post("/create-todo", async (req: Request, res: Response): Promise<void> => {
   try {
@@ -78,11 +80,12 @@ app.patch("/toggle-completed", async (req: Request, res: Response): Promise<void
 app.get("/todos", async (req: Request, res: Response): Promise<void> => {
   try {
     const todos = await getTodosService();
-
+    console.log("todos", todos);
     if (todos.length == 0) {
       res.status(204).json();
       return;
     }
+    console.log("todos", todos);
     res.status(200).json(todos);
   } catch (error: any) {
     console.error(error);
