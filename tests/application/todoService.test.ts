@@ -3,15 +3,15 @@ import app from "../../src/app";
 
 describe("todoService ", () => {
   describe("create-todo POST", () => {
-    it("create-todo POST route should return status code 403 if no title is provided", async () => {
+    it("create-todo POST route should return status code 400 if no title is provided", async () => {
       const response = await request(app).post("/create-todo").send({});
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(400);
       expect(response.body).toEqual("A title must be provided in order to save a todo!");
     });
 
-    it("create-todo POST route should return status code 403 if '' is provided as a title", async () => {
+    it("create-todo POST route should return status code 400 if '' is provided as a title", async () => {
       const response = await request(app).post("/create-todo").send({ title: "" });
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(400);
       expect(response.body).toEqual("A title must be provided in order to save a todo!");
     });
 
@@ -29,21 +29,21 @@ describe("todoService ", () => {
   });
 
   describe("update-todo POST", () => {
-    it("should return status code 403 if no id is provided", async () => {
+    it("should return status code 400 if no id is provided", async () => {
       const response = await request(app)
         .patch("/update-todo")
         .send({ title: "Turn the dishwasher on before leaving home 2morrow" });
 
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(400);
       expect(response.body).toEqual(
         "A valid id and a valid title must be provided if an update is requested!"
       );
     });
 
-    it("should return status code 403 if updated title is '', null or undefined", async () => {
+    it("should return status code 400 if updated title is '', null or undefined", async () => {
       const response = await request(app).patch("/update-todo").send({ id: 1, title: "" });
 
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(400);
       expect(response.body).toEqual(
         "A valid id and a valid title must be provided if an update is requested!"
       );
@@ -61,25 +61,25 @@ describe("todoService ", () => {
   });
 
   describe("toggle-completed PATCH", () => {
-    // it returns 403 if no id is provided
-    it("should return status code 403 if no id is provided", async () => {
+    // it returns 400 if no id is provided
+    it("should return status code 400 if no id is provided", async () => {
       const response = await request(app)
         .patch("/toggle-completed")
         .send({ completed: false, dateCompleted: Date.now() });
 
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(400);
       expect(response.body).toEqual(
         "A valid id and a boolean value must be provided to fulfill the toggle action"
       );
     });
 
-    // it returns 403 if done is different from a boolean
-    it("should return a 403 status code if completed contains a non-boolean value", async () => {
+    // it returns 400 if done is different from a boolean
+    it("should return a 400 status code if completed contains a non-boolean value", async () => {
       const response = await request(app)
         .patch("/toggle-completed")
         .send({ id: 1, completed: "completed", dateCompleted: Date.now() });
 
-      expect(response.status).toBe(403);
+      expect(response.status).toBe(400);
       expect(response.body).toEqual(
         "A valid id and a boolean value must be provided to fulfill the toggle action"
       );

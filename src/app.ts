@@ -19,7 +19,7 @@ app.post("/create-todo", async (req: Request, res: Response): Promise<void> => {
   try {
     const { title } = req.body;
     if (!title || title.trim() === "") {
-      res.status(403).json("A title must be provided in order to save a todo!");
+      res.status(400).json("A title must be provided in order to save a todo!");
       return;
     }
 
@@ -40,7 +40,7 @@ app.patch("/update-todo", async (req: Request, res: Response): Promise<void> => 
 
     if (!id || !title || title.trim() === "") {
       res
-        .status(403)
+        .status(400)
         .json("A valid id and a valid title must be provided if an update is requested!");
       return;
     }
@@ -61,7 +61,7 @@ app.patch("/toggle-completed", async (req: Request, res: Response): Promise<void
     const { id, completed } = req.body;
     if (!id || typeof completed !== "boolean") {
       res
-        .status(403)
+        .status(400)
         .json("A valid id and a boolean value must be provided to fulfill the toggle action");
       return;
     }
