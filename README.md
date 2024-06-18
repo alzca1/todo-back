@@ -150,12 +150,13 @@ server running on port 3000
 Ensure your PostgreSQL database has the following schema for the to-do items:
 
 ```
-CREATE TABLE todos (
-  id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  completed BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+ CREATE TABLE IF NOT EXISTS todos (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    completed BOOLEAN NOT NULL DEFAULT FALSE,
+    "dateCreated" TIMESTAMP NOT NULL DEFAULT NOW(),
+    "dateCompleted" TIMESTAMP
+ );
 ```
 
 ## License
